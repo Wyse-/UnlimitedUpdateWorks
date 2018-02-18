@@ -1,0 +1,10 @@
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\bin\Debug\UnlimitedUpdateWorks.exe.config
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\bin\Debug\UnlimitedUpdateWorks.exe
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\bin\Debug\UnlimitedUpdateWorks.pdb
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\Debug\UnlimitedUpdateWorks.csprojResolveAssemblyReference.cache
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\Debug\UnlimitedUpdateWorks.MainForm.resources
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\Debug\UnlimitedUpdateWorks.Properties.Resources.resources
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\Debug\UnlimitedUpdateWorks.csproj.GenerateResource.Cache
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\Debug\UnlimitedUpdateWorks.csproj.CoreCompileInputs.cache
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\Debug\UnlimitedUpdateWorks.exe
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\Debug\UnlimitedUpdateWorks.pdb
