@@ -37,7 +37,7 @@ namespace UnlimitedUpdateWorks
         {
             try
             {
-                string[] xmlData = new string[13];
+                string[] xmlData = new string[17];
                 xmlData[0] = xmlFile.SelectSingleNode("//DefaultValues/CatalogURL/text()").Value;
                 xmlData[1] = xmlFile.SelectSingleNode("//DefaultValues/TitleRegex/text()").Value;
                 xmlData[2] = xmlFile.SelectSingleNode("//DefaultValues/ProductRegex/text()").Value;
@@ -51,7 +51,10 @@ namespace UnlimitedUpdateWorks
                 xmlData[10] = xmlFile.SelectSingleNode("//DefaultValues/CheckOnStart/text()").Value;
                 xmlData[11] = xmlFile.SelectSingleNode("//DefaultValues/Remind/text()").Value;
                 xmlData[12] = xmlFile.SelectSingleNode("//DefaultValues/RemindInterval/text()").Value;
-
+                xmlData[13] = xmlFile.SelectSingleNode("//DefaultValues/DownloadFetch/text()").Value;
+                xmlData[14] = xmlFile.SelectSingleNode("//DefaultValues/Firefox/text()").Value;
+                xmlData[15] = xmlFile.SelectSingleNode("//DefaultValues/Chrome/text()").Value;
+                xmlData[16] = xmlFile.SelectSingleNode("//DefaultValues/IDRegex/text()").Value;
 
                 return xmlData;
             }
@@ -79,8 +82,12 @@ namespace UnlimitedUpdateWorks
         /// <param name="checkOnStart">Whether to check for updates on program start or not.</param>
         /// <param name="remind">Whether to use the remind function when updates are found or not. This is less CPU intensive than checking for updates.</param>
         /// <param name="remindInterval">Update remind interval (in minutes).</param>
+        /// <param name="chrome">Whether to use the Chrome Selenium driver or not.</param>
+        /// <param name="firefox">Whether to use the Firefox Selenium driver or not.</param>
+        /// <param name="downloadFetch">Whether to use the download URL fetching capabilities or not</param>
+        /// <param name="idRegex">Regular expression used to identify the unique update id in the HTML source.</param>
         ///  
-        public static void UpdateXML(string catalogUrl, string titleRegex, string productRegex, string dateRegex, string productFilter, string secOnly, string isCompatible, string isInstalled, string autoCheckInterval, string autoCheck, string checkOnStart, string remind, string remindInterval)
+        public static void UpdateXML(string catalogUrl, string titleRegex, string productRegex, string dateRegex, string productFilter, string secOnly, string isCompatible, string isInstalled, string autoCheckInterval, string autoCheck, string checkOnStart, string remind, string remindInterval, string downloadFetch, string firefox, string chrome, string idRegex)
         {
             try
             {
@@ -97,6 +104,11 @@ namespace UnlimitedUpdateWorks
                 xmlFile.SelectSingleNode("//DefaultValues/CheckOnStart/text()").Value = checkOnStart;
                 xmlFile.SelectSingleNode("//DefaultValues/Remind/text()").Value = remind;
                 xmlFile.SelectSingleNode("//DefaultValues/RemindInterval/text()").Value = remindInterval;
+                xmlFile.SelectSingleNode("//DefaultValues/DownloadFetch/text()").Value = downloadFetch;
+                xmlFile.SelectSingleNode("//DefaultValues/Firefox/text()").Value = firefox;
+                xmlFile.SelectSingleNode("//DefaultValues/Chrome/text()").Value = chrome;
+                xmlFile.SelectSingleNode("//DefaultValues/IDRegex/text()").Value = idRegex;
+
 
                 xmlFile.Save("config.xml");
             }

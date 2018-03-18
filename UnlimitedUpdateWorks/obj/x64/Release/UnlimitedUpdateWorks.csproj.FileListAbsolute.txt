@@ -7,3 +7,16 @@ C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\x64\Rel
 C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\x64\Release\UnlimitedUpdateWorks.csproj.CoreCompileInputs.cache
 C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\x64\Release\UnlimitedUpdateWorks.exe
 C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\x64\Release\UnlimitedUpdateWorks.pdb
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\bin\x64\Release\UnlimitedUpdateWorks.exe.config
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\bin\x64\Release\UnlimitedUpdateWorks.exe
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\bin\x64\Release\UnlimitedUpdateWorks.pdb
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\bin\x64\Release\WebDriver.dll
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\bin\x64\Release\WebDriver.Support.dll
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\bin\x64\Release\WebDriver.xml
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\bin\x64\Release\WebDriver.Support.xml
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\obj\x64\Release\UnlimitedUpdateWorks.MainForm.resources
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\obj\x64\Release\UnlimitedUpdateWorks.Properties.Resources.resources
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\obj\x64\Release\UnlimitedUpdateWorks.csproj.GenerateResource.Cache
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\obj\x64\Release\UnlimitedUpdateWorks.csproj.CoreCompileInputs.cache
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\obj\x64\Release\UnlimitedUpdateWorks.exe
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\obj\x64\Release\UnlimitedUpdateWorks.pdb

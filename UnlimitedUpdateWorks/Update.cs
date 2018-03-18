@@ -11,5 +11,6 @@ namespace UnlimitedUpdateWorks
         public string KB { get; set; } // Knowledge Base number of the update (e.g. "KB4056897").
         public string Product { get; set; } // Target product of the update (e.g. "Windows 7").
         public DateTime Date { get; set; } // Release date of the update.
+        public string HtmlID { get; set; } // Unique id which identifies the update in the Catalog's webpage. Only exposed in the HTML source code; can be used as a regular search parameter.
     }
 }

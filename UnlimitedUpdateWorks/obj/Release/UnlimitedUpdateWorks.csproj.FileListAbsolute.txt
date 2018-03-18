@@ -8,3 +8,17 @@ C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\Release
 C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.exe
 C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.pdb
 C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.csprojResolveAssemblyReference.cache
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\bin\Release\UnlimitedUpdateWorks.exe.config
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\bin\Release\UnlimitedUpdateWorks.exe
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\bin\Release\UnlimitedUpdateWorks.pdb
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\bin\Release\WebDriver.dll
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\bin\Release\WebDriver.Support.dll
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\bin\Release\WebDriver.xml
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\bin\Release\WebDriver.Support.xml
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.csprojResolveAssemblyReference.cache
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.MainForm.resources
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.Properties.Resources.resources
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.csproj.GenerateResource.Cache
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.csproj.CoreCompileInputs.cache
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.exe
+C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.pdb

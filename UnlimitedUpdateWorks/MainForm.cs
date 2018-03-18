@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Windows.Forms;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
+using System.Threading;
 
 namespace UnlimitedUpdateWorks
 {
@@ -47,6 +51,11 @@ namespace UnlimitedUpdateWorks
             autoCheckTimer.Interval = (int)autoCheckIntervalNumUpDown.Value * 60000;
             remindTimer.Enabled = remindCheckBox.Checked;
             remindTimer.Interval = (int)remindIntervalNumUpDown.Value * 60000;
+            urlFetchingCheckbox.Checked = Boolean.Parse(xmlData[13]);
+            firefoxButton.Checked = Boolean.Parse(xmlData[14]);
+            chromeButton.Checked = Boolean.Parse(xmlData[15]);
+            idRegexTextbox.Text = xmlData[16];
+            getUrlButton.Enabled = Boolean.Parse(xmlData[13]);
 
             if (checkOnStartCheckBox.Checked)
             {
@@ -58,7 +67,7 @@ namespace UnlimitedUpdateWorks
         /// <summary>
         /// When the auto-check timer ticks, call the ParseAndFilterUpdates method.
         /// </summary>
-        private void autoCheckTimer_Tick(object sender, EventArgs e)
+        private void AutoCheckTimer_Tick(object sender, EventArgs e)
         {
             ParseAndFilterUpdates();
         }
@@ -67,7 +76,7 @@ namespace UnlimitedUpdateWorks
         /// When the remind timer ticks, if the updatesFound flag is set to true check if the found updates are already installed.
         /// If they are not then call the ShowUpdatesBalloonTipAndUpdateToolStrip function.
         /// </summary>
-        private void remindTimer_Tick(object sender, EventArgs e)
+        private void RemindTimer_Tick(object sender, EventArgs e)
         {
             if (updatesFound)
             {
@@ -92,7 +101,7 @@ namespace UnlimitedUpdateWorks
         /// - enable the product filter textbox if the exclude incompatible checkbox is checked
         /// - disable the product filter textbox if the exclude incompatible checkbox is checked
         /// </summary>
-        private void isCompatibleCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void IsCompatibleCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             productFilterTextbox.Enabled = isCompatibleCheckBox.Checked;
         }
@@ -102,7 +111,7 @@ namespace UnlimitedUpdateWorks
         /// - enable the auto-check timer and auto-check interval numupdown if the auto-check checkbox is checked
         /// - disable the auto-check timer and auto-check interval numupdown if the auto-check checkbox is not checked
         /// </summary>
-        private void autoCheckCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void AutoCheckCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             autoCheckTimer.Enabled = autoCheckCheckBox.Checked;
             autoCheckIntervalNumUpDown.Enabled = autoCheckCheckBox.Checked;
@@ -113,7 +122,7 @@ namespace UnlimitedUpdateWorks
         /// - enable the update reminder timer and auto-check interval numupdown if the update reminder checkbox is checked
         /// - disable the update reminder timer and auto-check interval numupdown if the update reminder checkbox is not checked
         /// </summary>
-        private void remindCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void RemindCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             remindTimer.Enabled = remindCheckBox.Checked;
             remindIntervalNumUpDown.Enabled = remindCheckBox.Checked;
@@ -122,7 +131,7 @@ namespace UnlimitedUpdateWorks
         /// <summary>
         /// If the auto-check interval numupdown value changes, update the auto-check timer interval value (after converting the numupdown's value to milliseconds).
         /// </summary>
-        private void autoCheckIntervalNumUpDown_ValueChanged(object sender, EventArgs e)
+        private void AutoCheckIntervalNumUpDown_ValueChanged(object sender, EventArgs e)
         {
             autoCheckTimer.Interval = (int)autoCheckIntervalNumUpDown.Value * 60000;
         }
@@ -130,7 +139,7 @@ namespace UnlimitedUpdateWorks
         /// <summary>
         /// If the update reminder interval numupdown value changes, update the update reminder timer interval value (after converting the numupdown's value to milliseconds).
         /// </summary>
-        private void remindIntervalNumUpDown_ValueChanged(object sender, EventArgs e)
+        private void RemindIntervalNumUpDown_ValueChanged(object sender, EventArgs e)
         {
             remindTimer.Interval = (int)remindIntervalNumUpDown.Value * 60000;
         }
@@ -138,10 +147,11 @@ namespace UnlimitedUpdateWorks
         /// <summary>
         /// When the save button (in the Settings tab of the MainForm) gets clicked save all data to the config.xml file by calling the UpdateXML method and passing all values to it as parameters.
         /// </summary>
-        private void saveButton_Click(object sender, EventArgs e)
+        private void SaveButton_Click(object sender, EventArgs e)
         {
             XML.UpdateXML(msCatalogUrlTextbox.Text, titleRegexTextbox.Text, productRegexTextbox.Text, dateRegexTextbox.Text, productFilterTextbox.Text, secOnlyCheckBox.Checked.ToString(), isCompatibleCheckBox.Checked.ToString(),
-                isInstalledCheckBox.Checked.ToString(), autoCheckIntervalNumUpDown.Value.ToString(), autoCheckCheckBox.Checked.ToString(), checkOnStartCheckBox.Checked.ToString(), remindCheckBox.Checked.ToString(), remindIntervalNumUpDown.Value.ToString());
+                isInstalledCheckBox.Checked.ToString(), autoCheckIntervalNumUpDown.Value.ToString(), autoCheckCheckBox.Checked.ToString(), checkOnStartCheckBox.Checked.ToString(), remindCheckBox.Checked.ToString(), remindIntervalNumUpDown.Value.ToString(), 
+                urlFetchingCheckbox.Checked.ToString(), firefoxButton.Checked.ToString(), chromeButton.Checked.ToString(), idRegexTextbox.Text);
         }
 
         /// <summary>
@@ -149,7 +159,7 @@ namespace UnlimitedUpdateWorks
         /// Then, if updates are found, update the labels below the listbox to display the auto-selected update.
         /// While all of this happens disable the parse button and set the cursor to the "busy" one.
         /// </summary>
-        private void parseButton_Click(object sender, EventArgs e)
+        private void ParseButton_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
             parseButton.Enabled = false;
@@ -172,7 +182,7 @@ namespace UnlimitedUpdateWorks
         public List<Update> ParseAndFilterUpdates()
         {
             
-            updatesList = HTML.ParseUpdates(HTML.Scrape(StringManagement.ReplaceYearMonth(msCatalogUrlTextbox.Text)), titleRegexTextbox.Text, productRegexTextbox.Text, dateRegexTextbox.Text);
+            updatesList = HTML.ParseUpdates(HTML.Scrape(StringManagement.ReplaceYearMonth(msCatalogUrlTextbox.Text)), titleRegexTextbox.Text, productRegexTextbox.Text, dateRegexTextbox.Text, idRegexTextbox.Text);
             notifyIconMenuStrip.Items[1].Text = "Last checked: " + DateTime.Now;
             if (secOnlyCheckBox.Checked)
             {
@@ -202,19 +212,27 @@ namespace UnlimitedUpdateWorks
                 titleLabel.Text = "Title:\n" + u.Title;
                 productLabel.Text = "Product:\n" + u.Product;
                 dateLabel.Text = "Release date:\n" + u.Date.ToShortDateString();
+                htmlIdLabel.Text = "Html ID:\n" + u.HtmlID;
+                if (urlFetchingCheckbox.Checked)
+                {
+                    getUrlButton.Enabled = true;
+                }
+                
             }
             else
             {
                 titleLabel.Text = "Title:";
                 productLabel.Text = "Product:";
                 dateLabel.Text = "Release date:";
+                htmlIdLabel.Text = "Html ID:";
+                getUrlButton.Enabled = false;
             }
         }
 
         /// <summary>
         /// When the listbox data source changes, update the labels by calling the UpdateLabels method.
         /// </summary>
-        private void updatesListBox_DataSourceChanged(object sender, EventArgs e)
+        private void UpdatesListBox_DataSourceChanged(object sender, EventArgs e)
         {
             if (updatesListBox.SelectedItem != null)
             {
@@ -225,7 +243,7 @@ namespace UnlimitedUpdateWorks
         /// <summary>
         /// When the selected item in the listbox changes, update the labels by calling the UpdateLabels method.
         /// </summary>
-        private void updatesListBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void UpdatesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateLabels();
         }
@@ -251,11 +269,30 @@ namespace UnlimitedUpdateWorks
         /// <param name="updatesList">List containing the found updates.</param>
         private void ShowUpdatesBalloonTipAndUpdateToolStrip(List<Update> updatesList)
         {
-            if (updatesList.Count == 1)
+
+            if (updatesList.Count == 1 && urlFetchingCheckbox.Checked)
+            {
+                mainFormNotifyIcon.ShowBalloonTip(4000, "Update found", updatesList[0].KB + " Released " + updatesList[0].Date.ToShortDateString() + "\n\nClick to fetch download URL and copy to clipboard", ToolTipIcon.Info);
+                updatesFound = true;
+                notifyIconMenuStrip.Items[0].Text = "Update found, click to fetch download URL and copy to clipboard";
+                updateBindingSource.DataSource = updatesList;
+                if (updatesListBox.SelectedItem != null)
+                {
+                    UpdateLabels();
+                }
+
+
+            }
+            else if(updatesList.Count == 1 && !urlFetchingCheckbox.Checked)
             {
                 mainFormNotifyIcon.ShowBalloonTip(4000, "Update found", updatesList[0].KB + " Released " + updatesList[0].Date.ToShortDateString() + "\n\nClick to open in browser", ToolTipIcon.Info);
                 updatesFound = true;
                 notifyIconMenuStrip.Items[0].Text = "Update found, click to open in browser";
+                updateBindingSource.DataSource = updatesList;
+                if (updatesListBox.SelectedItem != null)
+                {
+                    UpdateLabels();
+                }
             }
             else if (updatesList.Count > 1)
             {
@@ -266,7 +303,12 @@ namespace UnlimitedUpdateWorks
                 }
                 mainFormNotifyIcon.ShowBalloonTip(4000, "Updates found", kbList + "\n\nClick to open in browser", ToolTipIcon.Info);
                 updatesFound = true;
-                notifyIconMenuStrip.Items[0].Text = "Update found, click to open in browser";
+                notifyIconMenuStrip.Items[0].Text = "Updates found, click to open in browser";
+                updateBindingSource.DataSource = updatesList;
+                if (updatesListBox.SelectedItem != null)
+                {
+                    UpdateLabels();
+                }
             }
             else
             {
@@ -277,24 +319,59 @@ namespace UnlimitedUpdateWorks
         /// <summary>
         /// When the balloon tip is clicked, open the search url(s) of the found update(s) on the default web browser.
         /// </summary>
-        private void mainFormNotifyIcon_BalloonTipClicked(object sender, EventArgs e)
+        private void MainFormNotifyIcon_BalloonTipClicked(object sender, EventArgs e)
         {
-            foreach (Update u in updatesList)
+            if(updatesList.Count == 1 && chromeButton.Checked && urlFetchingCheckbox.Checked)
             {
-                System.Diagnostics.Process.Start("https://www.catalog.update.microsoft.com/Search.aspx?q=" + u.KB);
+                Cursor.Current = Cursors.WaitCursor;
+                mainFormNotifyIcon.ShowBalloonTip(4000, "Fetching download URL", "Please wait...", ToolTipIcon.None);
+                Clipboard.SetText(FetchDownloadLinkChrome("https://www.catalog.update.microsoft.com/Search.aspx?q=" + updatesList[0].HtmlID, updatesList[0].HtmlID));
+                mainFormNotifyIcon.ShowBalloonTip(4000, "Done", "Download URL copied to clipboard", ToolTipIcon.Info);
+                Cursor.Current = Cursors.Default;
+            }
+            else if(updatesList.Count == 1 && firefoxButton.Checked && urlFetchingCheckbox.Checked)
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                mainFormNotifyIcon.ShowBalloonTip(4000, "Fetching download URL", "Please wait...", ToolTipIcon.None);
+                Clipboard.SetText(FetchDownloadLinkFirefox("https://www.catalog.update.microsoft.com/Search.aspx?q=" + updatesList[0].HtmlID, updatesList[0].HtmlID));
+                mainFormNotifyIcon.ShowBalloonTip(4000, "Done", "Download URL copied to clipboard", ToolTipIcon.Info);
+                Cursor.Current = Cursors.Default;
+            }
+            else if(updatesList.Count > 1 || !urlFetchingCheckbox.Checked)
+            {
+                foreach (Update u in updatesList)
+                {
+                    System.Diagnostics.Process.Start("https://www.catalog.update.microsoft.com/Search.aspx?q=" + u.HtmlID);
+                }
             }
         }
 
         /// <summary>
-        /// When the toolstrip update status entry gets clicked, if updates were found previously, open the search url(s) of the found update(s) on the default web browser.
+        /// When the toolstrip update status entry gets clicked, if update(s) were previously found open the search url(s) of the found update(s) on the default web browser.
         /// </summary>
-        private void toolStripUpdateStatus_Click(object sender, EventArgs e)
+        private void ToolStripUpdateStatus_Click(object sender, EventArgs e)
         {
-            if (updatesFound)
+            if (updatesList.Count == 1 && chromeButton.Checked && urlFetchingCheckbox.Checked)
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                mainFormNotifyIcon.ShowBalloonTip(4000, "Fetching download URL", "Please wait...", ToolTipIcon.None);
+                Clipboard.SetText(FetchDownloadLinkChrome("https://www.catalog.update.microsoft.com/Search.aspx?q=" + updatesList[0].HtmlID, updatesList[0].HtmlID));
+                mainFormNotifyIcon.ShowBalloonTip(4000, "Done", "Download URL copied to clipboard", ToolTipIcon.Info);
+                Cursor.Current = Cursors.Default;
+            }
+            else if (updatesList.Count == 1 && firefoxButton.Checked && urlFetchingCheckbox.Checked)
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                mainFormNotifyIcon.ShowBalloonTip(4000, "Fetching download URL", "Please wait...", ToolTipIcon.None);
+                Clipboard.SetText(FetchDownloadLinkFirefox("https://www.catalog.update.microsoft.com/Search.aspx?q=" + updatesList[0].HtmlID, updatesList[0].HtmlID));
+                mainFormNotifyIcon.ShowBalloonTip(4000, "Done", "Download URL copied to clipboard", ToolTipIcon.Info);
+                Cursor.Current = Cursors.Default;
+            }
+            else if (updatesList.Count > 1 || !urlFetchingCheckbox.Checked)
             {
                 foreach (Update u in updatesList)
                 {
-                    System.Diagnostics.Process.Start("https://www.catalog.update.microsoft.com/Search.aspx?q=" + u.KB);
+                    System.Diagnostics.Process.Start("https://www.catalog.update.microsoft.com/Search.aspx?q=" + u.HtmlID);
                 }
             }
         }
@@ -302,7 +379,7 @@ namespace UnlimitedUpdateWorks
         /// <summary>
         /// When the toolstrip manage entry is clicked, unhide the MainForm window.
         /// </summary>
-        private void toolStripManage_Click(object sender, EventArgs e)
+        private void ToolStripManage_Click(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized)
             {
@@ -316,9 +393,129 @@ namespace UnlimitedUpdateWorks
         /// <summary>
         /// When the toolstrip exit entry is clicked, exit the program.
         /// </summary>
-        private void toolStripExit_Click(object sender, EventArgs e)
+        private void ToolStripExit_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+
+        /// <summary>
+        /// Fetch the download link of the desired update by using the Selenium Firefox driver (a Firefox installation in the default directory is needed).
+        /// </summary>
+        /// <param name="searchUrl">Url of the starting website.</param>
+        /// <param name="htmlID">Unique HTML ID of the specific update (e.g. 26896846-497d-4755-893a-6870f72ddcf4). This is only exposed in the HTML source code, however it is usable as a search parameter for the Microsoft Update Catalog</param>
+        /// <returns>Direct download link to the specific update.</returns>
+        private string FetchDownloadLinkFirefox(string searchUrl, string htmlID)
+        {
+            FirefoxDriverService driverService = FirefoxDriverService.CreateDefaultService();
+            driverService.HideCommandPromptWindow = true;
+            FirefoxOptions options = new FirefoxOptions();
+            options.AddArguments("-headless");
+            IWebDriver driver = new FirefoxDriver(driverService, options, TimeSpan.FromSeconds(10));
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            driver.Navigate().GoToUrl(searchUrl);
+            IWebElement test = driver.FindElement(By.XPath($"//input[@id='{htmlID}' and @value='Download']"));
+            PopupWindowFinder finder = new PopupWindowFinder(driver);
+            string popupWindowHandle = finder.Click(test);
+            driver.SwitchTo().Window(popupWindowHandle);
+            Thread.Sleep(2000);
+            IWebElement downloadLinkElement = driver.FindElement(By.PartialLinkText(""));
+            string downloadLink = downloadLinkElement.GetAttribute("href");
+            driver.Quit();
+            return downloadLink;
+        }
+
+        /// <summary>
+        /// Fetch the download link of the desired update by using the Selenium Chrome driver (a Chrome installation in the default directory is needed).
+        /// </summary>
+        /// <param name="searchUrl">Url of the starting website.</param>
+        /// <param name="htmlID">Unique HTML ID of the specific update (e.g. 26896846-497d-4755-893a-6870f72ddcf4). This is only exposed in the HTML source code, however it is usable as a search parameter for the Microsoft Update Catalog</param>
+        /// <returns>Direct download link to the specific update.</returns>
+        private string FetchDownloadLinkChrome(string searchUrl, string htmlID)
+        {
+            ChromeDriverService driverService = ChromeDriverService.CreateDefaultService();
+            driverService.HideCommandPromptWindow = true;
+            ChromeOptions options = new ChromeOptions();
+            options.AddArguments("--headless");
+            options.AddArguments("--proxy-server='direct://'");
+            options.AddArguments("--proxy-bypass-list=*");
+            options.AddArguments("--disable-gpu");
+            IWebDriver driver = new ChromeDriver(driverService, options);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            driver.Navigate().GoToUrl(searchUrl);
+            IWebElement test = driver.FindElement(By.XPath($"//input[@id='{htmlID}' and @value='Download']"));
+            PopupWindowFinder finder = new PopupWindowFinder(driver);
+            string popupWindowHandle = finder.Click(test);
+            driver.SwitchTo().Window(popupWindowHandle);
+            IWebElement downloadLinkElement = driver.FindElement(By.PartialLinkText(""));
+            string downloadLink = downloadLinkElement.GetAttribute("href");
+            driver.Quit();
+            return downloadLink;
+        }
+
+        /// <summary>
+        /// Handles the basic radiobutton event logic.
+        /// </summary>
+        private void ChromeButton_CheckedChanged(object sender, EventArgs e)
+        {
+
+            if (firefoxButton.Checked && chromeButton.Checked)
+            {
+                firefoxButton.Checked = false;
+            }
+        }
+
+        /// <summary>
+        /// Handles the basic radiobutton event logic.
+        /// </summary>
+        private void FirefoxButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chromeButton.Checked && firefoxButton.Checked)
+            {
+                chromeButton.Checked = false;
+            }
+        }
+
+        /// <summary>
+        /// When the "get url" button is pressed either the Chrome or Firefox fetch function gets called depending on the settings, and the returning value (the direct link) gets copied to the clipboard.
+        /// </summary>
+        private void GetUrlButton_Click(object sender, EventArgs e)
+        {
+            Update u = updatesListBox.SelectedItem as Update;
+            if (chromeButton.Checked)
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                mainFormNotifyIcon.ShowBalloonTip(4000, "Fetching download URL", "Please wait...", ToolTipIcon.None);
+                Clipboard.SetText(FetchDownloadLinkChrome("https://www.catalog.update.microsoft.com/Search.aspx?q=" + u.HtmlID, u.HtmlID));
+                mainFormNotifyIcon.ShowBalloonTip(4000, "Done", "Download URL copied to clipboard", ToolTipIcon.Info);
+                Cursor.Current = Cursors.Default;
+            }
+            else if (firefoxButton.Checked)
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                mainFormNotifyIcon.ShowBalloonTip(4000, "Fetching download URL", "Please wait...", ToolTipIcon.None);
+                Clipboard.SetText(FetchDownloadLinkFirefox("https://www.catalog.update.microsoft.com/Search.aspx?q=" + u.HtmlID, u.HtmlID));
+                mainFormNotifyIcon.ShowBalloonTip(4000, "Done", "Download URL copied to clipboard", ToolTipIcon.Info);
+                Cursor.Current = Cursors.Default;
+            }
+        }
+
+        /// <summary>
+        /// Handles the basic radiobutton event logic.
+        /// </summary>
+        private void UrlFetchingCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (urlFetchingCheckbox.Checked)
+            {
+                chromeButton.Enabled = true;
+                firefoxButton.Enabled = true;
+            }
+            else if (!urlFetchingCheckbox.Checked)
+            {
+                chromeButton.Enabled = false;
+                firefoxButton.Enabled = false;
+                getUrlButton.Enabled = false;
+            }
         }
     }
 }

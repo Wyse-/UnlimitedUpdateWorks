@@ -46,11 +46,14 @@ namespace UnlimitedUpdateWorks
         /// <param name="productRegex">Regular expression used to match the update target product line.</param>
         /// <param name="dateRegex">Regular expression used to match the update release date line.</param>
         /// <returns>A list containing all the parsed updates.</returns>
-        public static List<Update> ParseUpdates(string htmlContent, string titleRegex, string productRegex, string dateRegex)
+        public static List<Update> ParseUpdates(string htmlContent, string titleRegex, string productRegex, string dateRegex, string idRegex)
         {
+            //File.WriteAllText("HTML_dump.txt", htmlContent);
+
             Update tempUpdate = new Update();
             List<Update> updatesList = new List<Update>();
             using (StringReader str = new StringReader(htmlContent))
+                
             {
                 string line;
                 while ((line = str.ReadLine()) != null)
@@ -68,6 +71,12 @@ namespace UnlimitedUpdateWorks
                     if (Regex.DoesRegexMatch(dateRegex, line))
                     {
                         tempUpdate.Date = DateTime.Parse(str.ReadLine().Trim(' '));
+                    }
+
+                    if (Regex.DoesRegexMatch(idRegex, line))
+                    {
+
+                        tempUpdate.HtmlID = str.ReadLine().Split('"')[3].Split('_')[0];
                         updatesList.Add(tempUpdate);
                         tempUpdate = new Update();
                     }
