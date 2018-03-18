@@ -13,5 +13,9 @@
     <CheckOnStart>True</CheckOnStart>
     <Remind>True</Remind>
     <RemindInterval>60</RemindInterval>
+    <DownloadFetch>True</DownloadFetch>
+    <Firefox>False</Firefox>
+    <Chrome>True</Chrome>
+    <IDRegex>MB&lt;\/span&gt; $</IDRegex>
   </DefaultValues>
 </UnlimitedUpdateWorks>
