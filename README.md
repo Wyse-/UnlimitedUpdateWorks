@@ -51,4 +51,4 @@ This project has been compiled with Visual Studio Community 2017 and tested on W
 ## License
 This software utilizes [Selenium](https://github.com/SeleniumHQ/selenium), which is published under the [Apache 2.0 License](https://github.com/Wyse-/UnlimitedUpdateWorks/blob/master/LICENSE_Selenium).
 
-This software utilizes [Selenium.Firefox.WebDriver](https://github.com/jbaranda/nupkg-selenium-webdrivers) and [Selenium.WebDriver.ChromeDriver](https://github.com/jsakamoto/nupkg-selenium-webdriver-chromedriver/), both published under [The Unlicense](https://github.com/Wyse-/UnlimitedUpdateWorks/blob/master/LICENSE)
+This software utilizes [Selenium.Firefox.WebDriver](https://github.com/jbaranda/nupkg-selenium-webdrivers) and [Selenium.WebDriver.ChromeDriver](https://github.com/jsakamoto/nupkg-selenium-webdriver-chromedriver/), both published under [The Unlicense](https://github.com/Wyse-/UnlimitedUpdateWorks/blob/master/LICENSE).
