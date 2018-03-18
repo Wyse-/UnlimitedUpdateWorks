@@ -2,13 +2,9 @@
 
 
 
-## Screenshots
+## Demo
 
-![alt tag](https://i.imgur.com/47fju37.png)
-![alt tag](https://i.imgur.com/thlDgNb.png)
-
-![alt tag](https://i.imgur.com/z6tw0qc.png) ![alt tag](https://i.imgur.com/Tk7ku1U.png)
-
+![alt tag](https://i.imgur.com/jUr36rC.gif)
 
 ## Description
 *Features:*
@@ -17,12 +13,12 @@
 * Checks if found updates are already installed.
 * Does not rely on the Windows Update service.
 * User configurable through a GUI accessible by right clicking the tray icon and clicking on “Manage”. The user configured values can be saved back to the config.xml file which will be loaded each time the program starts.
-* Low CPU and memory usage: 0% CPU usage when idle, ~4% when checking for updates.
+* Low CPU and memory usage: 0% CPU usage when idle, ~4% when checking for updates. *v1.1 Edit: actively using the newly implemented direct download link fetching capabilities (i.e. while fetching download links, not while idling) spawns an headless Chrome/Firefox process which will use the same ammount of resources as a normal web browser.*
 
 **.NET Framework 4.6.1 or later is required.**
 
 *What it doesn’t do:*
-* It does not automatically download or install updates for you: you will need to open the Microsoft Update Catalog website by clicking the balloon tip or right clicking on the tray icon and clicking on “Update found” and proceed with manual download of the update and installation.
+* It does not automatically download or install updates for you: you will need to open the Microsoft Update Catalog website by clicking the balloon tip or right clicking on the tray icon and clicking on “Update found” and proceed with manual download of the update and installation. *v1.1 Edit: while automatic update downloads or installs are still not possible automatic direct download link fetching has been implemented.*
 * It does not support multiple pages of results.
 * It does not check for updates released earlier than the current month. Technically this can be done manually through the update parser, but it’s highly inefficient: if you need to catch up on older updates you should use [WSUS Offline](http://download.wsusoffline.net/) (it also supports filtering out non security only updates).
 * It doesn’t annoy you (unless you configure it to).
@@ -30,13 +26,14 @@
 *Why:*
 
 I, like many others, don’t like the direction in which Microsoft is heading. I believe keeping your OS fully patched with security updates is important, but with security updates I mean actual *security* updates which patch newly discovered exploits, not [telemetry](https://winaero.com/blog/telemetry-and-data-collection-are-coming-to-windows-7-and-windows-8-too/)  or [CPU blacklisting](https://arstechnica.com/information-technology/2017/04/new-processors-are-now-blocked-from-receiving-updates-on-old-windows/) updates which then get pushed to “Security Monthly Quality Rollups”.
-There’s also the fact that the Windows Update service is incredibly buggy: it gets stuck constantly when checking for updates and sometimes it randomly uses a lot of CPU while idling. I’d rather not deal with it anymore: nowadays I keep it disabled and enable it when I have to install an update.
+There’s also the fact that the Windows Update service is incredibly buggy: it gets stuck constantly when checking for updates and sometimes it randomly uses a lot of CPU power while idling. I’d rather not deal with it anymore: nowadays I keep it disabled and enable it when I have to install an update.
 
 *How:*
 
 The update parsing is performed by scraping the raw HTML from the [Microsoft Update Catalog](https://www.catalog.update.microsoft.com/Home.aspx) search result pages ([like this one](https://www.catalog.update.microsoft.com/Search.aspx?q=2018-02%20Security%20Only%20Quality%20Update%20for%20Windows%207%20for%20x64-based%20Systems)
 The keywords can be configured through the GUI (see below) and the placeholder keywords “YEAR” and “MONTH” will be replaced by the program with the current year and month: this is needed because the search terms need to be very specific to produce a single page of results and to only check recent updates.
 The scraped HTML is then checked against the three different regular expressions (configurable in case Microsoft changes something in the catalog’s HTML) which identify the update title, kb number and release date.
+*v1.1 Edit: Automatic direct download link fetching has been implemented through [Selenium](https://github.com/SeleniumHQ/selenium) with Chrome and Firefox support, and will automate the whole process of opening the web browser, clicking the downlod button and getting the direct link to the .msu file (the link will be copied to the clipboard).*
 
 
 ## GUI/Configuration
