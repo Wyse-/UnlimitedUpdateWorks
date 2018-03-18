@@ -55,7 +55,7 @@ namespace UnlimitedUpdateWorks
             firefoxButton.Checked = Boolean.Parse(xmlData[14]);
             chromeButton.Checked = Boolean.Parse(xmlData[15]);
             idRegexTextbox.Text = xmlData[16];
-            getUrlButton.Enabled = Boolean.Parse(xmlData[13]);
+            getUrlButton.Enabled = false;
 
             if (checkOnStartCheckBox.Checked)
             {
