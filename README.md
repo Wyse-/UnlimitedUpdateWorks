@@ -44,3 +44,11 @@ The GUI may seem a bit convoluted at first, here’s a few tips:
 * If you want to be notified another OS’ updates edit this part of the URL: `Windows%207`. For example, for Windows Server 2008 R2 the URL should be `https://www.catalog.update.microsoft.com/Search.aspx?q=YEAR-MONTH%20Security%20Only%20Quality%20Update%20for%20Windows%20Server%202008%20R2%20for%20x64-based%20Systems`.
 * The update parser tab is only supposed to be used to test your options or to force an update check.
 * The “Use reminder instead of rechecking when updates are found” checkbox is there for a reason: checking for updates is a more CPU intensive task than reminding to install the previously found ones.
+
+## Compiling & testing
+This project has been compiled with Visual Studio Community 2017 and tested on Windows 7 x64.
+
+## License
+This software utilizes [Selenium](https://github.com/SeleniumHQ/selenium), which is published under the [Apache 2.0 License](https://github.com/Wyse-/UnlimitedUpdateWorks/blob/master/LICENSE_Selenium).
+
+This software utilizes [Selenium.Firefox.WebDriver](https://github.com/jbaranda/nupkg-selenium-webdrivers) and [Selenium.WebDriver.ChromeDriver](https://github.com/jsakamoto/nupkg-selenium-webdriver-chromedriver/), both published under [The Unlicense](https://github.com/Wyse-/UnlimitedUpdateWorks/blob/master/LICENSE)
