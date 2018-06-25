@@ -81,6 +81,8 @@
             this.idRegexTextbox = new System.Windows.Forms.TextBox();
             this.autoCheckTimer = new System.Windows.Forms.Timer(this.components);
             this.remindTimer = new System.Windows.Forms.Timer(this.components);
+            this.chromiumButton = new System.Windows.Forms.RadioButton();
+            this.chromiumTextBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.updateBindingSource)).BeginInit();
             this.notifyIconMenuStrip.SuspendLayout();
             this.tabControlMainForm.SuspendLayout();
@@ -412,6 +414,8 @@
             // 
             // automationPage
             // 
+            this.automationPage.Controls.Add(this.chromiumTextBox);
+            this.automationPage.Controls.Add(this.chromiumButton);
             this.automationPage.Controls.Add(this.urlFetchingCheckbox);
             this.automationPage.Controls.Add(this.chromeButton);
             this.automationPage.Controls.Add(this.firefoxButton);
@@ -610,6 +614,25 @@
             // 
             this.remindTimer.Tick += new System.EventHandler(this.RemindTimer_Tick);
             // 
+            // chromiumButton
+            // 
+            this.chromiumButton.AutoSize = true;
+            this.chromiumButton.Location = new System.Drawing.Point(3, 191);
+            this.chromiumButton.Name = "chromiumButton";
+            this.chromiumButton.Size = new System.Drawing.Size(140, 17);
+            this.chromiumButton.TabIndex = 31;
+            this.chromiumButton.TabStop = true;
+            this.chromiumButton.Text = "Custom Chromium binary";
+            this.chromiumButton.UseVisualStyleBackColor = true;
+            this.chromiumButton.CheckedChanged += new System.EventHandler(this.chromiumButton_CheckedChanged);
+            // 
+            // chromiumTextBox
+            // 
+            this.chromiumTextBox.Location = new System.Drawing.Point(5, 214);
+            this.chromiumTextBox.Name = "chromiumTextBox";
+            this.chromiumTextBox.Size = new System.Drawing.Size(275, 20);
+            this.chromiumTextBox.TabIndex = 32;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -698,6 +721,8 @@
         private System.Windows.Forms.CheckBox urlFetchingCheckbox;
         private System.Windows.Forms.Button getUrlButton;
         private System.Windows.Forms.Label htmlIdLabel;
+        private System.Windows.Forms.TextBox chromiumTextBox;
+        private System.Windows.Forms.RadioButton chromiumButton;
     }
 }
 

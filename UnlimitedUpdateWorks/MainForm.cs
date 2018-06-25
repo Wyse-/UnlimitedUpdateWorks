@@ -6,6 +6,9 @@ using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using System.Threading;
+using System.Net;
+using System.Runtime.InteropServices;
+using OpenQA.Selenium.PhantomJS;
 
 namespace UnlimitedUpdateWorks
 {
@@ -32,7 +35,7 @@ namespace UnlimitedUpdateWorks
         {
             this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             string[] xmlData = new string[6];
-            XML.LoadXML("config.xml");
+            XML.LoadXML(Constants.ConfigFileName);
             xmlData = XML.ParseXML();
             msCatalogUrlTextbox.Text = xmlData[0];
             titleRegexTextbox.Text = xmlData[1];
@@ -48,14 +51,17 @@ namespace UnlimitedUpdateWorks
             remindCheckBox.Checked = Boolean.Parse(xmlData[11]);
             remindIntervalNumUpDown.Value = int.Parse(xmlData[12]);
             autoCheckTimer.Enabled = autoCheckCheckBox.Checked;
-            autoCheckTimer.Interval = (int)autoCheckIntervalNumUpDown.Value * 60000;
+            autoCheckTimer.Interval = (int)autoCheckIntervalNumUpDown.Value * Constants.IntervalTime;
             remindTimer.Enabled = remindCheckBox.Checked;
-            remindTimer.Interval = (int)remindIntervalNumUpDown.Value * 60000;
+            remindTimer.Interval = (int)remindIntervalNumUpDown.Value * Constants.IntervalTime;
             urlFetchingCheckbox.Checked = Boolean.Parse(xmlData[13]);
             firefoxButton.Checked = Boolean.Parse(xmlData[14]);
             chromeButton.Checked = Boolean.Parse(xmlData[15]);
             idRegexTextbox.Text = xmlData[16];
             getUrlButton.Enabled = false;
+            chromiumButton.Checked = Boolean.Parse(xmlData[17]);
+            chromiumTextBox.Enabled = Boolean.Parse(xmlData[17]);
+            chromiumTextBox.Text = xmlData[18];
 
             if (checkOnStartCheckBox.Checked)
             {
@@ -133,7 +139,7 @@ namespace UnlimitedUpdateWorks
         /// </summary>
         private void AutoCheckIntervalNumUpDown_ValueChanged(object sender, EventArgs e)
         {
-            autoCheckTimer.Interval = (int)autoCheckIntervalNumUpDown.Value * 60000;
+            autoCheckTimer.Interval = (int)autoCheckIntervalNumUpDown.Value * Constants.IntervalTime;
         }
 
         /// <summary>
@@ -141,7 +147,7 @@ namespace UnlimitedUpdateWorks
         /// </summary>
         private void RemindIntervalNumUpDown_ValueChanged(object sender, EventArgs e)
         {
-            remindTimer.Interval = (int)remindIntervalNumUpDown.Value * 60000;
+            remindTimer.Interval = (int)remindIntervalNumUpDown.Value * Constants.IntervalTime;
         }
 
         /// <summary>
@@ -151,7 +157,7 @@ namespace UnlimitedUpdateWorks
         {
             XML.UpdateXML(msCatalogUrlTextbox.Text, titleRegexTextbox.Text, productRegexTextbox.Text, dateRegexTextbox.Text, productFilterTextbox.Text, secOnlyCheckBox.Checked.ToString(), isCompatibleCheckBox.Checked.ToString(),
                 isInstalledCheckBox.Checked.ToString(), autoCheckIntervalNumUpDown.Value.ToString(), autoCheckCheckBox.Checked.ToString(), checkOnStartCheckBox.Checked.ToString(), remindCheckBox.Checked.ToString(), remindIntervalNumUpDown.Value.ToString(), 
-                urlFetchingCheckbox.Checked.ToString(), firefoxButton.Checked.ToString(), chromeButton.Checked.ToString(), idRegexTextbox.Text);
+                urlFetchingCheckbox.Checked.ToString(), firefoxButton.Checked.ToString(), chromeButton.Checked.ToString(), idRegexTextbox.Text, chromiumButton.Checked.ToString(), chromiumTextBox.Text);
         }
 
         /// <summary>
@@ -181,8 +187,23 @@ namespace UnlimitedUpdateWorks
         /// <returns>A list containing all found and filtered updates.</returns>
         public List<Update> ParseAndFilterUpdates()
         {
-            
-            updatesList = HTML.ParseUpdates(HTML.Scrape(StringManagement.ReplaceYearMonth(msCatalogUrlTextbox.Text)), titleRegexTextbox.Text, productRegexTextbox.Text, dateRegexTextbox.Text, idRegexTextbox.Text);
+            try
+            {
+                updatesList = HTML.ParseUpdates(HTML.Scrape(StringManagement.ReplaceYearMonth(msCatalogUrlTextbox.Text)), titleRegexTextbox.Text, productRegexTextbox.Text, dateRegexTextbox.Text, idRegexTextbox.Text);
+            }
+            catch (WebException)
+            {
+                Thread.Sleep(Constants.NoInternetTimeout);
+                if (IsConnectedToInternet())
+                {
+                    updatesList = HTML.ParseUpdates(HTML.Scrape(StringManagement.ReplaceYearMonth(msCatalogUrlTextbox.Text)), titleRegexTextbox.Text, productRegexTextbox.Text, dateRegexTextbox.Text, idRegexTextbox.Text);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
             notifyIconMenuStrip.Items[1].Text = "Last checked: " + DateTime.Now;
             if (secOnlyCheckBox.Checked)
             {
@@ -272,7 +293,7 @@ namespace UnlimitedUpdateWorks
 
             if (updatesList.Count == 1 && urlFetchingCheckbox.Checked)
             {
-                mainFormNotifyIcon.ShowBalloonTip(4000, "Update found", updatesList[0].KB + " Released " + updatesList[0].Date.ToShortDateString() + "\n\nClick to fetch download URL and copy to clipboard", ToolTipIcon.Info);
+                mainFormNotifyIcon.ShowBalloonTip(Constants.BalloonTipTime, "Update found", updatesList[0].KB + " Released " + updatesList[0].Date.ToShortDateString() + "\n\nClick to fetch download URL and copy to clipboard", ToolTipIcon.Info);
                 updatesFound = true;
                 notifyIconMenuStrip.Items[0].Text = "Update found, click to fetch download URL and copy to clipboard";
                 updateBindingSource.DataSource = updatesList;
@@ -285,7 +306,7 @@ namespace UnlimitedUpdateWorks
             }
             else if(updatesList.Count == 1 && !urlFetchingCheckbox.Checked)
             {
-                mainFormNotifyIcon.ShowBalloonTip(4000, "Update found", updatesList[0].KB + " Released " + updatesList[0].Date.ToShortDateString() + "\n\nClick to open in browser", ToolTipIcon.Info);
+                mainFormNotifyIcon.ShowBalloonTip(Constants.BalloonTipTime, "Update found", updatesList[0].KB + " Released " + updatesList[0].Date.ToShortDateString() + "\n\nClick to open in browser", ToolTipIcon.Info);
                 updatesFound = true;
                 notifyIconMenuStrip.Items[0].Text = "Update found, click to open in browser";
                 updateBindingSource.DataSource = updatesList;
@@ -301,7 +322,7 @@ namespace UnlimitedUpdateWorks
                 {
                     kbList = kbList + u.KB + " Released " + u.Date.ToShortDateString() + "\n";
                 }
-                mainFormNotifyIcon.ShowBalloonTip(4000, "Updates found", kbList + "\n\nClick to open in browser", ToolTipIcon.Info);
+                mainFormNotifyIcon.ShowBalloonTip(Constants.BalloonTipTime, "Updates found", kbList + "\n\nClick to open in browser", ToolTipIcon.Info);
                 updatesFound = true;
                 notifyIconMenuStrip.Items[0].Text = "Updates found, click to open in browser";
                 updateBindingSource.DataSource = updatesList;
@@ -321,23 +342,38 @@ namespace UnlimitedUpdateWorks
         /// </summary>
         private void MainFormNotifyIcon_BalloonTipClicked(object sender, EventArgs e)
         {
-            if(updatesList.Count == 1 && chromeButton.Checked && urlFetchingCheckbox.Checked)
+            ChooseDriverAndFetchLink();
+        }
+
+
+
+        /// <summary>
+        /// When the toolstrip update status entry gets clicked, if update(s) were previously found open the search url(s) of the found update(s) on the default web browser.
+        /// </summary>
+        private void ToolStripUpdateStatus_Click(object sender, EventArgs e)
+        {
+            ChooseDriverAndFetchLink();
+        }
+
+
+        /// <summary>
+        /// Choose Selenium driver based on user choice and call FetchLink.
+        /// </summary>
+        private void ChooseDriverAndFetchLink()
+        {
+            if (updatesList.Count == 1 && chromiumButton.Checked && urlFetchingCheckbox.Checked)
             {
-                Cursor.Current = Cursors.WaitCursor;
-                mainFormNotifyIcon.ShowBalloonTip(4000, "Fetching download URL", "Please wait...", ToolTipIcon.None);
-                Clipboard.SetText(FetchDownloadLinkChrome("https://www.catalog.update.microsoft.com/Search.aspx?q=" + updatesList[0].HtmlID, updatesList[0].HtmlID));
-                mainFormNotifyIcon.ShowBalloonTip(4000, "Done", "Download URL copied to clipboard", ToolTipIcon.Info);
-                Cursor.Current = Cursors.Default;
+                FetchLink("https://www.catalog.update.microsoft.com/Search.aspx?q=" + updatesList[0].HtmlID, updatesList[0].HtmlID, false, true, true);
             }
-            else if(updatesList.Count == 1 && firefoxButton.Checked && urlFetchingCheckbox.Checked)
+            else if (updatesList.Count == 1 && chromeButton.Checked && urlFetchingCheckbox.Checked)
             {
-                Cursor.Current = Cursors.WaitCursor;
-                mainFormNotifyIcon.ShowBalloonTip(4000, "Fetching download URL", "Please wait...", ToolTipIcon.None);
-                Clipboard.SetText(FetchDownloadLinkFirefox("https://www.catalog.update.microsoft.com/Search.aspx?q=" + updatesList[0].HtmlID, updatesList[0].HtmlID));
-                mainFormNotifyIcon.ShowBalloonTip(4000, "Done", "Download URL copied to clipboard", ToolTipIcon.Info);
-                Cursor.Current = Cursors.Default;
+                FetchLink("https://www.catalog.update.microsoft.com/Search.aspx?q=" + updatesList[0].HtmlID, updatesList[0].HtmlID, false, true, false);
             }
-            else if(updatesList.Count > 1 || !urlFetchingCheckbox.Checked)
+            else if (updatesList.Count == 1 && firefoxButton.Checked && urlFetchingCheckbox.Checked)
+            {
+                FetchLink("https://www.catalog.update.microsoft.com/Search.aspx?q=" + updatesList[0].HtmlID, updatesList[0].HtmlID, true, false, false);
+            }
+            else if (updatesList.Count > 1 || !urlFetchingCheckbox.Checked)
             {
                 foreach (Update u in updatesList)
                 {
@@ -347,33 +383,46 @@ namespace UnlimitedUpdateWorks
         }
 
         /// <summary>
-        /// When the toolstrip update status entry gets clicked, if update(s) were previously found open the search url(s) of the found update(s) on the default web browser.
+        /// Fetch link and copy it to clipboard.
         /// </summary>
-        private void ToolStripUpdateStatus_Click(object sender, EventArgs e)
+        private void FetchLink(string searchUrl, string htmlID, bool firefox, bool chrome, bool useCustomChromiumBinary)
         {
-            if (updatesList.Count == 1 && chromeButton.Checked && urlFetchingCheckbox.Checked)
+            Cursor.Current = Cursors.WaitCursor;
+            mainFormNotifyIcon.ShowBalloonTip(Constants.BalloonTipTime, "Fetching download URL", "Please wait...", ToolTipIcon.None);
+            if (chrome)
             {
-                Cursor.Current = Cursors.WaitCursor;
-                mainFormNotifyIcon.ShowBalloonTip(4000, "Fetching download URL", "Please wait...", ToolTipIcon.None);
-                Clipboard.SetText(FetchDownloadLinkChrome("https://www.catalog.update.microsoft.com/Search.aspx?q=" + updatesList[0].HtmlID, updatesList[0].HtmlID));
-                mainFormNotifyIcon.ShowBalloonTip(4000, "Done", "Download URL copied to clipboard", ToolTipIcon.Info);
-                Cursor.Current = Cursors.Default;
-            }
-            else if (updatesList.Count == 1 && firefoxButton.Checked && urlFetchingCheckbox.Checked)
-            {
-                Cursor.Current = Cursors.WaitCursor;
-                mainFormNotifyIcon.ShowBalloonTip(4000, "Fetching download URL", "Please wait...", ToolTipIcon.None);
-                Clipboard.SetText(FetchDownloadLinkFirefox("https://www.catalog.update.microsoft.com/Search.aspx?q=" + updatesList[0].HtmlID, updatesList[0].HtmlID));
-                mainFormNotifyIcon.ShowBalloonTip(4000, "Done", "Download URL copied to clipboard", ToolTipIcon.Info);
-                Cursor.Current = Cursors.Default;
-            }
-            else if (updatesList.Count > 1 || !urlFetchingCheckbox.Checked)
-            {
-                foreach (Update u in updatesList)
+                try
                 {
-                    System.Diagnostics.Process.Start("https://www.catalog.update.microsoft.com/Search.aspx?q=" + u.HtmlID);
+                    Clipboard.SetText(FetchDownloadLinkChrome(searchUrl, htmlID, useCustomChromiumBinary));
+                }
+                catch (Exception)
+                {
+                    if (useCustomChromiumBinary)
+                    {
+                        MessageBox.Show("Custom Chromium binary not found at provided path", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No Chrome installation found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    return;
                 }
             }
+            if (firefox)
+            {
+                try
+                {
+                    Clipboard.SetText(FetchDownloadLinkFirefox(searchUrl, htmlID));
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("No Firefox installation found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+            }
+            mainFormNotifyIcon.ShowBalloonTip(Constants.BalloonTipTime, "Done", "Download URL copied to clipboard", ToolTipIcon.Info);
+            Cursor.Current = Cursors.Default;
         }
 
         /// <summary>
@@ -418,7 +467,7 @@ namespace UnlimitedUpdateWorks
             PopupWindowFinder finder = new PopupWindowFinder(driver);
             string popupWindowHandle = finder.Click(test);
             driver.SwitchTo().Window(popupWindowHandle);
-            Thread.Sleep(2000);
+            //Thread.Sleep(10000);
             IWebElement downloadLinkElement = driver.FindElement(By.PartialLinkText(""));
             string downloadLink = downloadLinkElement.GetAttribute("href");
             driver.Quit();
@@ -426,12 +475,13 @@ namespace UnlimitedUpdateWorks
         }
 
         /// <summary>
-        /// Fetch the download link of the desired update by using the Selenium Chrome driver (a Chrome installation in the default directory is needed).
+        /// Fetch the download link of the desired update by using the Selenium Chrome driver (a Chrome installation in the default directory is needed). Will use a user set custom Chromium binary if the flag is set to true.
         /// </summary>
         /// <param name="searchUrl">Url of the starting website.</param>
         /// <param name="htmlID">Unique HTML ID of the specific update (e.g. 26896846-497d-4755-893a-6870f72ddcf4). This is only exposed in the HTML source code, however it is usable as a search parameter for the Microsoft Update Catalog</param>
+        /// <param name="useCustomChromiumBinary">Use user set custom Chromium binary</param>
         /// <returns>Direct download link to the specific update.</returns>
-        private string FetchDownloadLinkChrome(string searchUrl, string htmlID)
+        private string FetchDownloadLinkChrome(string searchUrl, string htmlID, bool useCustomChromiumBinary)
         {
             ChromeDriverService driverService = ChromeDriverService.CreateDefaultService();
             driverService.HideCommandPromptWindow = true;
@@ -440,6 +490,10 @@ namespace UnlimitedUpdateWorks
             options.AddArguments("--proxy-server='direct://'");
             options.AddArguments("--proxy-bypass-list=*");
             options.AddArguments("--disable-gpu");
+            if (useCustomChromiumBinary)
+            {
+                options.BinaryLocation = chromiumTextBox.Text;
+            }
             IWebDriver driver = new ChromeDriver(driverService, options);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             driver.Navigate().GoToUrl(searchUrl);
@@ -463,6 +517,10 @@ namespace UnlimitedUpdateWorks
             {
                 firefoxButton.Checked = false;
             }
+            else if (chromeButton.Checked && chromiumButton.Checked)
+            {
+                chromiumButton.Checked = false;
+            }
         }
 
         /// <summary>
@@ -474,29 +532,51 @@ namespace UnlimitedUpdateWorks
             {
                 chromeButton.Checked = false;
             }
+            else if (chromiumButton.Checked && firefoxButton.Checked)
+            {
+                chromiumButton.Checked = false;
+            }
         }
+
+
+        private void chromiumButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chromiumButton.Checked && chromeButton.Checked)
+            {
+                chromeButton.Checked = false;
+            }
+            else if (chromiumButton.Checked && firefoxButton.Checked)
+            {
+                firefoxButton.Checked = false;
+            }
+            else if (!chromiumButton.Checked)
+            {
+                chromiumTextBox.Enabled = false;
+            }
+            else if (chromiumButton.Checked)
+            {
+                chromiumTextBox.Enabled = true;
+            }
+        }
+
 
         /// <summary>
         /// When the "get url" button is pressed either the Chrome or Firefox fetch function gets called depending on the settings, and the returning value (the direct link) gets copied to the clipboard.
         /// </summary>
         private void GetUrlButton_Click(object sender, EventArgs e)
         {
-            Update u = updatesListBox.SelectedItem as Update;
-            if (chromeButton.Checked)
+            Update selectedUpdate = updatesListBox.SelectedItem as Update;
+            if (chromiumButton.Checked)
             {
-                Cursor.Current = Cursors.WaitCursor;
-                mainFormNotifyIcon.ShowBalloonTip(4000, "Fetching download URL", "Please wait...", ToolTipIcon.None);
-                Clipboard.SetText(FetchDownloadLinkChrome("https://www.catalog.update.microsoft.com/Search.aspx?q=" + u.HtmlID, u.HtmlID));
-                mainFormNotifyIcon.ShowBalloonTip(4000, "Done", "Download URL copied to clipboard", ToolTipIcon.Info);
-                Cursor.Current = Cursors.Default;
+                FetchLink("https://www.catalog.update.microsoft.com/Search.aspx?q=" + selectedUpdate.HtmlID, selectedUpdate.HtmlID, false, true, true);
+            }
+            else if (chromeButton.Checked)
+            {
+                FetchLink("https://www.catalog.update.microsoft.com/Search.aspx?q=" + selectedUpdate.HtmlID, selectedUpdate.HtmlID, false, true, false);
             }
             else if (firefoxButton.Checked)
             {
-                Cursor.Current = Cursors.WaitCursor;
-                mainFormNotifyIcon.ShowBalloonTip(4000, "Fetching download URL", "Please wait...", ToolTipIcon.None);
-                Clipboard.SetText(FetchDownloadLinkFirefox("https://www.catalog.update.microsoft.com/Search.aspx?q=" + u.HtmlID, u.HtmlID));
-                mainFormNotifyIcon.ShowBalloonTip(4000, "Done", "Download URL copied to clipboard", ToolTipIcon.Info);
-                Cursor.Current = Cursors.Default;
+                FetchLink("https://www.catalog.update.microsoft.com/Search.aspx?q=" + updatesList[0].HtmlID, updatesList[0].HtmlID, true, false, false);
             }
         }
 
@@ -509,13 +589,31 @@ namespace UnlimitedUpdateWorks
             {
                 chromeButton.Enabled = true;
                 firefoxButton.Enabled = true;
+                chromiumButton.Enabled = true;
+                if (chromiumButton.Checked)
+                {
+                    chromiumTextBox.Enabled = true;
+                }
             }
             else if (!urlFetchingCheckbox.Checked)
             {
                 chromeButton.Enabled = false;
                 firefoxButton.Enabled = false;
                 getUrlButton.Enabled = false;
+                chromiumButton.Enabled = false;
+                chromiumTextBox.Enabled = false;
             }
+        }
+
+        /// <summary>
+        /// Checks for internet connectivity.
+        /// </summary>
+        [DllImport("wininet.dll")]
+        private extern static bool InternetGetConnectedState(out int Description, int ReservedValue);
+        public static bool IsConnectedToInternet()
+        {
+            int Desc;
+            return InternetGetConnectedState(out Desc, 0);
         }
     }
 }

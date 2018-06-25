@@ -22,16 +22,15 @@ namespace UnlimitedUpdateWorks
         /// <returns>Raw HTML scraped from the given url.</returns>
         public static string Scrape(string url)
         {
-            string httpContent;
+            string httpContent = null;
+            WebClient client = new WebClient();
 
             try
             {
-                WebClient client = new WebClient();
                 httpContent = client.DownloadString(url);
             }
-            catch (Exception)
+            catch (WebException)
             {
-                MessageBox.Show("Unable to scrape HTML from provided URL", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw;
             }
 

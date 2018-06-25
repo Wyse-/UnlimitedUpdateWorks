@@ -37,7 +37,7 @@ namespace UnlimitedUpdateWorks
         {
             try
             {
-                string[] xmlData = new string[17];
+                string[] xmlData = new string[19];
                 xmlData[0] = xmlFile.SelectSingleNode("//DefaultValues/CatalogURL/text()").Value;
                 xmlData[1] = xmlFile.SelectSingleNode("//DefaultValues/TitleRegex/text()").Value;
                 xmlData[2] = xmlFile.SelectSingleNode("//DefaultValues/ProductRegex/text()").Value;
@@ -55,6 +55,8 @@ namespace UnlimitedUpdateWorks
                 xmlData[14] = xmlFile.SelectSingleNode("//DefaultValues/Firefox/text()").Value;
                 xmlData[15] = xmlFile.SelectSingleNode("//DefaultValues/Chrome/text()").Value;
                 xmlData[16] = xmlFile.SelectSingleNode("//DefaultValues/IDRegex/text()").Value;
+                xmlData[17] = xmlFile.SelectSingleNode("//DefaultValues/Chromium/text()").Value;
+                xmlData[18] = xmlFile.SelectSingleNode("//DefaultValues/ChromiumBinary/text()").Value;
 
                 return xmlData;
             }
@@ -86,8 +88,10 @@ namespace UnlimitedUpdateWorks
         /// <param name="firefox">Whether to use the Firefox Selenium driver or not.</param>
         /// <param name="downloadFetch">Whether to use the download URL fetching capabilities or not</param>
         /// <param name="idRegex">Regular expression used to identify the unique update id in the HTML source.</param>
+        /// <param name="chromium">Whether to use a custom Chromium binary with the Chrome Selenium driver or not.</param>
+        /// <param name="chromiumBinary">Location of the custom Chromium binary.</param>
         ///  
-        public static void UpdateXML(string catalogUrl, string titleRegex, string productRegex, string dateRegex, string productFilter, string secOnly, string isCompatible, string isInstalled, string autoCheckInterval, string autoCheck, string checkOnStart, string remind, string remindInterval, string downloadFetch, string firefox, string chrome, string idRegex)
+        public static void UpdateXML(string catalogUrl, string titleRegex, string productRegex, string dateRegex, string productFilter, string secOnly, string isCompatible, string isInstalled, string autoCheckInterval, string autoCheck, string checkOnStart, string remind, string remindInterval, string downloadFetch, string firefox, string chrome, string idRegex, string chromium, string chromiumBinary)
         {
             try
             {
@@ -108,7 +112,8 @@ namespace UnlimitedUpdateWorks
                 xmlFile.SelectSingleNode("//DefaultValues/Firefox/text()").Value = firefox;
                 xmlFile.SelectSingleNode("//DefaultValues/Chrome/text()").Value = chrome;
                 xmlFile.SelectSingleNode("//DefaultValues/IDRegex/text()").Value = idRegex;
-
+                xmlFile.SelectSingleNode("//DefaultValues/Chromium/text()").Value = chromium;
+                xmlFile.SelectSingleNode("//DefaultValues/ChromiumBinary/text()").Value = chromiumBinary;
 
                 xmlFile.Save("config.xml");
             }
