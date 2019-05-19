@@ -8,7 +8,7 @@ using OpenQA.Selenium.Firefox;
 using System.Threading;
 using System.Net;
 using System.Runtime.InteropServices;
-using OpenQA.Selenium.PhantomJS;
+using System.Collections.ObjectModel;
 
 namespace UnlimitedUpdateWorks
 {
@@ -395,7 +395,7 @@ namespace UnlimitedUpdateWorks
                 {
                     Clipboard.SetText(FetchDownloadLinkChrome(searchUrl, htmlID, useCustomChromiumBinary));
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     if (useCustomChromiumBinary)
                     {
@@ -467,11 +467,18 @@ namespace UnlimitedUpdateWorks
             PopupWindowFinder finder = new PopupWindowFinder(driver);
             string popupWindowHandle = finder.Click(test);
             driver.SwitchTo().Window(popupWindowHandle);
-            //Thread.Sleep(10000);
-            IWebElement downloadLinkElement = driver.FindElement(By.PartialLinkText(""));
-            string downloadLink = downloadLinkElement.GetAttribute("href");
-            driver.Quit();
-            return downloadLink;
+            ReadOnlyCollection<IWebElement> downloadLinkElements = driver.FindElements(By.PartialLinkText(""));
+            foreach (IWebElement downloadLinkElement in downloadLinkElements)
+            {
+                string downloadLink = downloadLinkElement.GetAttribute("href");
+                if (downloadLink.EndsWith(".msu"))
+                {
+                    driver.Quit();
+                    return downloadLink;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -501,10 +508,18 @@ namespace UnlimitedUpdateWorks
             PopupWindowFinder finder = new PopupWindowFinder(driver);
             string popupWindowHandle = finder.Click(test);
             driver.SwitchTo().Window(popupWindowHandle);
-            IWebElement downloadLinkElement = driver.FindElement(By.PartialLinkText(""));
-            string downloadLink = downloadLinkElement.GetAttribute("href");
-            driver.Quit();
-            return downloadLink;
+            ReadOnlyCollection<IWebElement> downloadLinkElements = driver.FindElements(By.PartialLinkText(""));
+            foreach(IWebElement downloadLinkElement in downloadLinkElements)
+            {
+                string downloadLink = downloadLinkElement.GetAttribute("href");
+                if(downloadLink.EndsWith(".msu"))
+                {
+                    driver.Quit();
+                    return downloadLink;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

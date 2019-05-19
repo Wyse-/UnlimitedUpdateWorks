@@ -15,7 +15,9 @@
     <RemindInterval>60</RemindInterval>
     <DownloadFetch>True</DownloadFetch>
     <Firefox>False</Firefox>
-    <Chrome>True</Chrome>
+    <Chrome>False</Chrome>
+    <Chromium>True</Chromium>
+    <ChromiumBinary>C:\Program Files\ungoogled-chromium\chrome.exe</ChromiumBinary>
     <IDRegex>MB&lt;\/span&gt; $</IDRegex>
   </DefaultValues>
 </UnlimitedUpdateWorks>

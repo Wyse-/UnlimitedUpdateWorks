@@ -22,3 +22,18 @@ C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\obj\
 C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.csproj.CoreCompileInputs.cache
 C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.exe
 C:\Users\Wyse\source\repos\UnlimitedUpdateWorks-master\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.pdb
+C:\Users\Wyse\Downloads\New folder (2)\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.csprojAssemblyReference.cache
+C:\Users\Wyse\Downloads\New folder (2)\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.MainForm.resources
+C:\Users\Wyse\Downloads\New folder (2)\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.Properties.Resources.resources
+C:\Users\Wyse\Downloads\New folder (2)\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.csproj.GenerateResource.cache
+C:\Users\Wyse\Downloads\New folder (2)\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.csproj.CoreCompileInputs.cache
+C:\Users\Wyse\Downloads\New folder (2)\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.exe
+C:\Users\Wyse\Downloads\New folder (2)\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.pdb
+C:\Users\Wyse\Downloads\New folder (2)\UnlimitedUpdateWorks\UnlimitedUpdateWorks\bin\Release\UnlimitedUpdateWorks.exe.config
+C:\Users\Wyse\Downloads\New folder (2)\UnlimitedUpdateWorks\UnlimitedUpdateWorks\bin\Release\UnlimitedUpdateWorks.exe
+C:\Users\Wyse\Downloads\New folder (2)\UnlimitedUpdateWorks\UnlimitedUpdateWorks\bin\Release\UnlimitedUpdateWorks.pdb
+C:\Users\Wyse\Downloads\New folder (2)\UnlimitedUpdateWorks\UnlimitedUpdateWorks\bin\Release\WebDriver.dll
+C:\Users\Wyse\Downloads\New folder (2)\UnlimitedUpdateWorks\UnlimitedUpdateWorks\bin\Release\WebDriver.Support.dll
+C:\Users\Wyse\Downloads\New folder (2)\UnlimitedUpdateWorks\UnlimitedUpdateWorks\bin\Release\WebDriver.xml
+C:\Users\Wyse\Downloads\New folder (2)\UnlimitedUpdateWorks\UnlimitedUpdateWorks\bin\Release\WebDriver.Support.xml
+C:\Users\Wyse\Downloads\New folder (2)\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\Release\UnlimitedUpdateWorks.csproj.CopyComplete

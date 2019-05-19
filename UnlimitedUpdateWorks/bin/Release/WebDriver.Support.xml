@@ -300,17 +300,17 @@
             </summary>
             <param name="e">A <see cref="T:OpenQA.Selenium.Support.Events.WebElementEventArgs"/> that contains the event data.</param>
         </member>
-        <member name="M:OpenQA.Selenium.Support.Events.EventFiringWebDriver.OnElementValueChanging(OpenQA.Selenium.Support.Events.WebElementEventArgs)">
+        <member name="M:OpenQA.Selenium.Support.Events.EventFiringWebDriver.OnElementValueChanging(OpenQA.Selenium.Support.Events.WebElementValueEventArgs)">
             <summary>
             Raises the <see cref="E:OpenQA.Selenium.Support.Events.EventFiringWebDriver.ElementValueChanging"/> event.
             </summary>
-            <param name="e">A <see cref="T:OpenQA.Selenium.Support.Events.WebElementEventArgs"/> that contains the event data.</param>
+            <param name="e">A <see cref="T:OpenQA.Selenium.Support.Events.WebElementValueEventArgs"/> that contains the event data.</param>
         </member>
-        <member name="M:OpenQA.Selenium.Support.Events.EventFiringWebDriver.OnElementValueChanged(OpenQA.Selenium.Support.Events.WebElementEventArgs)">
+        <member name="M:OpenQA.Selenium.Support.Events.EventFiringWebDriver.OnElementValueChanged(OpenQA.Selenium.Support.Events.WebElementValueEventArgs)">
             <summary>
             Raises the <see cref="E:OpenQA.Selenium.Support.Events.EventFiringWebDriver.ElementValueChanged"/> event.
             </summary>
-            <param name="e">A <see cref="T:OpenQA.Selenium.Support.Events.WebElementEventArgs"/> that contains the event data.</param>
+            <param name="e">A <see cref="T:OpenQA.Selenium.Support.Events.WebElementValueEventArgs"/> that contains the event data.</param>
         </member>
         <member name="M:OpenQA.Selenium.Support.Events.EventFiringWebDriver.OnFindingElement(OpenQA.Selenium.Support.Events.FindElementEventArgs)">
             <summary>
@@ -764,6 +764,24 @@
         <member name="P:OpenQA.Selenium.Support.Events.WebElementEventArgs.Element">
             <summary>
             Gets the element used for the action.
+            </summary>
+        </member>
+        <member name="T:OpenQA.Selenium.Support.Events.WebElementValueEventArgs">
+            <summary>
+            Provides data for events related to finding elements.
+            </summary>
+        </member>
+        <member name="M:OpenQA.Selenium.Support.Events.WebElementValueEventArgs.#ctor(OpenQA.Selenium.IWebDriver,OpenQA.Selenium.IWebElement,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenQA.Selenium.Support.Events.WebElementValueEventArgs"/> class.
+            </summary>
+            <param name="driver">The WebDriver instance used for the action.</param>
+            <param name="element">The element used for the action.</param>
+            <param name="value">The new value for the element.</param>
+        </member>
+        <member name="P:OpenQA.Selenium.Support.Events.WebElementValueEventArgs.Value">
+            <summary>
+            Gets the Value that is written to the element
             </summary>
         </member>
         <member name="T:OpenQA.Selenium.Support.Extensions.WebDriverExtensions">
@@ -2033,12 +2051,12 @@
             Gets all of the selected options within the select element.
             </summary>
         </member>
-        <member name="M:OpenQA.Selenium.Support.UI.SelectElement.SelectByText(System.String)">
+        <member name="M:OpenQA.Selenium.Support.UI.SelectElement.SelectByText(System.String,System.Boolean)">
             <summary>
             Select all options by the text displayed.
             </summary>
-            <param name="text">The text of the option to be selected. If an exact match is not found,
-            this method will perform a substring match.</param>
+            <param name="text">The text of the option to be selected.</param>
+            <param name="partialMatch">Default value is false. If true a partial match on the Options list will be performed, otherwise exact match.</param>
             <remarks>When given "Bar" this method would select an option like:
             <para>
             &lt;option value="foo"&gt;Bar&lt;/option&gt;
