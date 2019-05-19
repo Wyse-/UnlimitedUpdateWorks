@@ -395,7 +395,7 @@ namespace UnlimitedUpdateWorks
                 {
                     Clipboard.SetText(FetchDownloadLinkChrome(searchUrl, htmlID, useCustomChromiumBinary));
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     if (useCustomChromiumBinary)
                     {

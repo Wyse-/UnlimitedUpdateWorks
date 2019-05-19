@@ -1,9 +1,0 @@
-C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\bin\x64\Debug\UnlimitedUpdateWorks.exe.config
-C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\bin\x64\Debug\UnlimitedUpdateWorks.exe
-C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\bin\x64\Debug\UnlimitedUpdateWorks.pdb
-C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\x64\Debug\UnlimitedUpdateWorks.MainForm.resources
-C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\x64\Debug\UnlimitedUpdateWorks.Properties.Resources.resources
-C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\x64\Debug\UnlimitedUpdateWorks.csproj.GenerateResource.Cache
-C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\x64\Debug\UnlimitedUpdateWorks.csproj.CoreCompileInputs.cache
-C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\x64\Debug\UnlimitedUpdateWorks.exe
-C:\Users\Wyse\source\repos\UnlimitedUpdateWorks\UnlimitedUpdateWorks\obj\x64\Debug\UnlimitedUpdateWorks.pdb
